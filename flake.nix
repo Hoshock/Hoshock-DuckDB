@@ -19,6 +19,7 @@
         packages = with pkgs; [
           go
           gcc
+          delve
         ];
       };
     };
