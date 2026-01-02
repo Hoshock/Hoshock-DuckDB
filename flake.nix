@@ -17,16 +17,25 @@
 
       devShells."${system}".default = pkgs.mkShell {
         packages = with pkgs; [
+          delve
           gcc
           go
+          gopls
         ];
+        env = {
+          GOROOT = "${pkgs.go}/share/go";
+          CGO_ENABLED = "1";
+        };
         shellHook = ''
-          export GOROOT="${pkgs.go}/share/go"
-          export GOPATH="$HOME/go"
-          export CGO_ENABLED=1
+          export XDG_CONFIG_HOME="$HOME/.config"
+          export XDG_STATE_HOME="$HOME/.local/state"
+          export XDG_CACHE_HOME="$HOME/.cache"
+          export XDG_DATA_HOME="$HOME/.local/share"
+          export XDG_RUNTIME_DIR="/run/user/$UID"
 
-          go install github.com/go-delve/delve/cmd/dlv@latest
-          go get github.com/duckdb/duckdb-go/v2
+          export GOPATH="$HOME/.local/share/go"
+          export GOCACHE="$HOME/.cache/go-build"
+          export GOMODCACHE="$HOME/.cache/go/mod"
         '';
       };
     };
