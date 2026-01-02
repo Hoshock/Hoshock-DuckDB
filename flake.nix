@@ -17,10 +17,17 @@
 
       devShells."${system}".default = pkgs.mkShell {
         packages = with pkgs; [
-          go
           gcc
-          delve
+          go
         ];
+        shellHook = ''
+          export GOROOT="${pkgs.go}/share/go"
+          export GOPATH="$HOME/go"
+          export CGO_ENABLED=1
+
+          go install github.com/go-delve/delve/cmd/dlv@latest
+          go get github.com/duckdb/duckdb-go/v2
+        '';
       };
     };
 }
